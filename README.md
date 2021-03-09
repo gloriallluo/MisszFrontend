@@ -1,4 +1,6 @@
-# missz-frontend
+# MisszFrontend
+
+The frontend of MissZ.
 
 ## Project setup
 ```
