@@ -51,39 +51,47 @@
     </div>
 
     <!-- 游戏区 -->
-    <jump-game v-if="state > 0" />
+    <div v-if="state === 1">Waiting...</div>
 
     <!-- 展示回复区 -->
+    <div v-if="state === 2">
+      <el-card
+          class="box-card"
+          style="margin-left: 3rem; margin-right: 3rem">
+        <div>{{ this.interpretText }}</div>
+      </el-card>
+      <el-button
+          round
+          icon="el-icon-refresh"
+          @click="state = 0" style="margin-top: 2rem">
+        输入下一个梦境
+      </el-button>
+    </div>
   </div>
 </template>
 
 <script>
-import JumpGame from "@/components/JumpGame"
+import postBackend from "@/utils/postBackend"
+import API from "@/utils/API"
 
-const inputting = 0;
-// eslint-disable-next-line no-unused-vars
-const submitting = 1;
-// eslint-disable-next-line no-unused-vars
-const received = 2;
+const formPattern = [
+  { key: '梦境描述', value: '' },
+  { key: '年龄', value: '' },
+  { key: '性别', value: '' }
+]
+const selectPattern = [
+    '最近遇到的事情', '学业状况', '情感状况', '婚姻状况'
+]
 
 export default {
   name: 'dream-interpreter',
-  components: {JumpGame},
-  comments: {
-    JumpGame
-  },
   data() {
     return {
-      state: inputting,
-      dreamForm: [
-        { key: '梦境描述', value: '' },
-        { key: '年龄', value: '' },
-        { key: '性别', value: '' }
-      ],
+      state: 0,
+      dreamForm: formPattern,
       newFormItemKey: '',
-      candidateFormItemKey: [
-          '最近遇到的事情', '学业状况', '情感状况', '婚姻状况'
-      ]
+      candidateFormItemKey: selectPattern,
+      interpretText: ''
     }
   },
   methods: {
@@ -98,8 +106,39 @@ export default {
       this.dreamForm.splice(idx, 1)
     },
     onSubmit() {
-      this.state = submitting
+      this.state = 1
       console.log('submit')
+      let dreamBody = ''
+      this.dreamForm.forEach(elem => {
+        dreamBody += ` ${elem.key}: ${elem.value}`
+      })
+      postBackend(API.POST_DREAM, {
+        dream: dreamBody
+      }, jsonObj => {
+        this.state = 2
+        console.log(jsonObj)
+        this.interpretText = jsonObj
+      })
+    }
+  },
+  watch: {
+    state: {
+      // some initialization
+      handler: function (val) {
+        switch (val) {
+          case 0:
+            this.dreamForm = formPattern
+            this.newFormItemKey = ''
+            this.candidateFormItemKey = selectPattern
+            break
+          case 1:
+            break
+          case 2:
+            break
+          default:
+            break
+        }
+      }
     }
   }
 }

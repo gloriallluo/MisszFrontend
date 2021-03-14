@@ -1,7 +1,5 @@
 const API = {
-    default: {
-        url: 'haha'
-    }
+    POST_DREAM: '/backend/dream/'
 }
 
 export default API
