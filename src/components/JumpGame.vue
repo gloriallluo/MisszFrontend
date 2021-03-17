@@ -1,5 +1,5 @@
 <template>
-  <div>Jump Game</div>
+  <div>Waiting...</div>
 </template>
 
 <script>

@@ -15,7 +15,9 @@
           style="height: 100%; padding: 3rem">
         <router-view />
       </el-main>
-      <el-footer height="3rem">Developed by xdl</el-footer>
+      <el-footer height="3rem">
+        Developed by xdl
+      </el-footer>
     </el-container>
   </div>
 </template>

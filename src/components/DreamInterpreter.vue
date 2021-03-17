@@ -1,28 +1,35 @@
 <template>
   <div>
+    <div style="font-size: 2.5rem">
+      MissZ
+    </div>
+    <div style="font-size: 1.2rem; font-family: 'Songti SC',serif">
+      / 周 / 小 / 解 /
+    </div>
 
     <!-- 输入区域 -->
     <div
-        v-if="state === 0"
-        style="margin-left: 15rem; margin-right: 15rem; margin-top: 1rem">
-      <el-form label-width="8rem">
+        style="margin-left: 12rem; margin-right: 12rem; margin-top: 1.2rem">
+      <el-form label-width="8rem" style="margin-right: 4rem">
         <el-form-item
             v-for="(item, idx) in dreamForm"
             :key="idx"
             :label="item.key">
           <el-input
-              v-model="item.value">
+              v-model="item.value"
+              :disabled="state !== 0">
             <el-button
                 v-if="idx > 0"
                 slot="append"
                 icon="el-icon-delete"
+                :disabled="state !== 0"
                 @click="onClickRemoveFormItem(idx)"/>
           </el-input>
         </el-form-item>
       </el-form>
 
       <div style="padding-top: 1rem; padding-bottom: 1rem">
-        <i style="margin-right: 1rem">Add value-key pair:</i>
+        <i style="margin-right: 1rem">Add new key:</i>
         <el-select
             v-model="newFormItemKey"
             filterable
@@ -36,25 +43,33 @@
               @change="newFormItemKey = item" />
         </el-select>
         <el-button
-            icon="el-icon-circle-check"
-            type="text"
-            size="large"
+            icon="el-icon-check"
+            circle size="small"
             @click="onClickAppendFormItem(newFormItemKey)"
             style="margin-left: 1rem" />
       </div>
 
       <el-button
           type="primary"
-          @click="onSubmit">
+          :loading="state === 1"
+          :disabled="state === 2"
+          @click="onSubmit"
+          style="margin-top: 1rem">
         Submit
       </el-button>
     </div>
 
     <!-- 游戏区 -->
-    <div v-if="state === 1">Waiting...</div>
+    <div
+        v-if="state === 1"
+        style="margin-top: 2rem">
+      <jump-game />
+    </div>
 
     <!-- 展示回复区 -->
-    <div v-if="state === 2">
+    <div
+        v-if="state === 2"
+        style="margin-top: 2rem">
       <el-card
           class="box-card"
           style="margin-left: 3rem; margin-right: 3rem">
@@ -63,7 +78,8 @@
       <el-button
           round
           icon="el-icon-refresh"
-          @click="state = 0" style="margin-top: 2rem">
+          @click="resetDreamForm"
+          style="margin-top: 2rem">
         输入下一个梦境
       </el-button>
     </div>
@@ -73,6 +89,7 @@
 <script>
 import postBackend from "@/utils/postBackend"
 import API from "@/utils/API"
+import JumpGame from "@/components/JumpGame";
 
 const formPattern = [
   { key: '梦境描述', value: '' },
@@ -85,6 +102,9 @@ const selectPattern = [
 
 export default {
   name: 'dream-interpreter',
+  components: {
+    JumpGame
+  },  // components
   data() {
     return {
       state: 0,
@@ -93,7 +113,7 @@ export default {
       candidateFormItemKey: selectPattern,
       interpretText: ''
     }
-  },
+  },  // data
   methods: {
     onClickAppendFormItem(newKey) {
       if (newKey === '') return
@@ -107,7 +127,6 @@ export default {
     },
     onSubmit() {
       this.state = 1
-      console.log('submit')
       let dreamBody = ''
       this.dreamForm.forEach(elem => {
         dreamBody += ` ${elem.key}: ${elem.value}`
@@ -116,31 +135,20 @@ export default {
         dream: dreamBody
       }, jsonObj => {
         this.state = 2
-        console.log(jsonObj)
         this.interpretText = jsonObj
       })
+    },
+    resetDreamForm() {
+      this.dreamForm.forEach((_, index) => {
+        this.dreamForm[index].value = ''
+      })
+      console.log(this.dreamForm)
+      console.log(formPattern)
+      this.newFormItemKey = ''
+      this.candidateFormItemKey = selectPattern
+      this.state = 0
     }
-  },
-  watch: {
-    state: {
-      // some initialization
-      handler: function (val) {
-        switch (val) {
-          case 0:
-            this.dreamForm = formPattern
-            this.newFormItemKey = ''
-            this.candidateFormItemKey = selectPattern
-            break
-          case 1:
-            break
-          case 2:
-            break
-          default:
-            break
-        }
-      }
-    }
-  }
+  }  // methods
 }
 </script>
 
