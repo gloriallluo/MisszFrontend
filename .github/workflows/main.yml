@@ -28,6 +28,8 @@ jobs:
         run: |
           npm install
           npm run build
+        env:
+          - CI: true
 
       - name: Deploy Alibaba Cloud
         uses: easingthemes/ssh-deploy@v2.0.7
@@ -37,4 +39,3 @@ jobs:
           SOURCE: "dist/"
           REMOTE_HOST: ${{ secrets.REMOTE_HOST }}
           REMOTE_USER: "root"
-          TARGET: "/missz/front"
