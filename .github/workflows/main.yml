@@ -40,5 +40,5 @@ jobs:
           ARGS: "-avz --delete"
           SOURCE: "dist/"
           REMOTE_HOST: ${{ secrets.REMOTE_HOST }}
-          REMOTE_USER: "xdl"
-          TARGET: "/home/xdl/front"
+          REMOTE_USER: "root"
+          TARGET: "/home/root/front"
