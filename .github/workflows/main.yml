@@ -9,7 +9,7 @@ on:
 
 jobs:
 
-  build:
+  build and deploy:
     runs-on: ubuntu-latest
 
     steps:
@@ -27,12 +27,6 @@ jobs:
         env:
           CI: true
 
-  deploy:
-    runs-on: ubuntu-latest
-
-    steps:
-      - uses: actions/checkout@main
-
       - name: Deploy Alibaba Cloud
         uses: easingthemes/ssh-deploy@v2.1.1
         env:
@@ -41,4 +35,4 @@ jobs:
           SOURCE: "dist/"
           REMOTE_HOST: ${{ secrets.REMOTE_HOST }}
           REMOTE_USER: "root"
-#          TARGET: "/home/xdl/front/"
+#          TARGET: "front/"
