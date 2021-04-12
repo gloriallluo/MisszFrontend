@@ -1,23 +1,24 @@
 <template>
-  <div>
+  <div style="margin: 1rem">
     <!-- 图片展示面板 -->
     <el-carousel
         :interval="3000"
         type="card"
-        height="13rem">
+        height="10rem"
+        style="margin-top: 1rem; margin-bottom: 1rem">
       <el-carousel-item
-          v-for="card in cards"
-          :key="card"
+          v-for="(card, idx) in cards"
+          :key="idx"
           height="100%"
           width="100%">
-        <el-image :src="card.src" fit="cover" />
+        <el-image :src="card.src" fit="cover" style="height: 100%" />
       </el-carousel-item>
     </el-carousel>
 
     <el-collapse
         v-model="activeItem"
         accordion
-        style="margin-left: 5rem; margin-right: 5rem">
+        style="max-width: 60rem; margin: 0 auto">
       <el-collapse-item
           v-for="(item, idx) in items"
           :key="idx"
