@@ -1,6 +1,6 @@
 <template>
   <div>
-    <div style="font-size: 2.5rem">
+    <div style="font-size: 2.5rem; margin-top: 3rem">
       MissZ
     </div>
     <div style="font-size: 1.2rem; font-family: 'Songti SC',serif">
@@ -9,12 +9,12 @@
 
     <!-- 输入区域 -->
     <div
-        style="margin-left: 12rem; margin-right: 12rem; margin-top: 1.2rem">
+        style="margin-left: 2rem; margin-right: 2rem; min-width: 3rem; margin-top: 1.5rem">
       <el-form label-width="8rem" style="margin-right: 4rem">
         <el-form-item
             v-for="(item, idx) in dreamForm"
-            :key="idx"
-            :label="item.key">
+            :key="idx">
+          <span slot="label" style="font-size: 0.8rem">{{ item.key }}</span>
           <el-input
               v-model="item.value"
               :disabled="state !== 0">
@@ -29,7 +29,13 @@
       </el-form>
 
       <div style="padding-top: 1rem; padding-bottom: 1rem">
-        <i style="margin-right: 1rem">Add new key:</i>
+        <el-popover
+            trigger="hover"
+            title="条目是什么？"
+            content="条目就是描述你的梦境的一个小标题，可以理解为一个键。"
+            style="font-size: 0.8rem">
+          <i slot="reference" style="margin-right: 1rem">新建条目</i>
+        </el-popover>
         <el-select
             v-model="newFormItemKey"
             filterable
@@ -42,11 +48,17 @@
               :label="item"
               @change="newFormItemKey = item" />
         </el-select>
-        <el-button
-            icon="el-icon-check"
-            circle size="small"
-            @click="onClickAppendFormItem(newFormItemKey)"
-            style="margin-left: 1rem" />
+        <el-popover
+            title="提示"
+            trigger="hover"
+            content="点击此按钮添加新条目。"
+            style="font-size: 0.8rem">
+          <el-button
+              icon="el-icon-check"
+              circle size="small" slot="reference"
+              @click="onClickAppendFormItem(newFormItemKey)"
+              style="margin-left: 1rem" />
+        </el-popover>
       </div>
 
       <el-button
@@ -75,6 +87,7 @@
           style="margin-left: 3rem; margin-right: 3rem">
         <div>{{ this.interpretText }}</div>
       </el-card>
+
       <el-button
           round
           icon="el-icon-refresh"
