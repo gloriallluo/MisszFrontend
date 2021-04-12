@@ -9,15 +9,16 @@
 
     <!-- 输入区域 -->
     <div
-        style="margin-left: 2rem; margin-right: 2rem; min-width: 3rem; margin-top: 1.5rem">
-      <el-form label-width="8rem" style="margin-right: 4rem">
+        style="min-width: 3rem; max-width: 45rem; margin: 0 auto">
+      <el-form label-width="8rem" style="margin-right: 2rem; margin-top: 2.5rem">
         <el-form-item
             v-for="(item, idx) in dreamForm"
             :key="idx">
           <span slot="label" style="font-size: 0.8rem">{{ item.key }}</span>
           <el-input
               v-model="item.value"
-              :disabled="state !== 0">
+              :disabled="state !== 0"
+              size="medium">
             <el-button
                 v-if="idx > 0"
                 slot="append"
@@ -32,14 +33,14 @@
         <el-popover
             trigger="hover"
             title="条目是什么？"
-            content="条目就是描述你的梦境的一个小标题，可以理解为一个键。"
-            style="font-size: 0.8rem">
-          <i slot="reference" style="margin-right: 1rem">新建条目</i>
+            content="条目就是描述你的梦境的一个小标题，可以理解为一个键。">
+          <i slot="reference" style="margin-right: 0.8rem">新建条目</i>
         </el-popover>
         <el-select
             v-model="newFormItemKey"
             filterable
             allow-create
+            style="max-width: 50%"
             placeholder="新建的描述条目">
           <el-option
               v-for="item in candidateFormItemKey"
