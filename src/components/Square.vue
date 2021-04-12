@@ -23,11 +23,11 @@
           :key="idx"
           :name="idx">
         <template slot="title">
-          {{ item.title }}
+          {{ item.dream }}
           <i class="el-icon-moon" style="margin-left: 0.5rem" />
         </template>
         <div>
-          {{ item.content }}
+          {{ item.interpret }}
         </div>
       </el-collapse-item>
     </el-collapse>
@@ -35,6 +35,9 @@
 </template>
 
 <script>
+import getBackend from "@/utils/getBackend"
+import API from "@/utils/API"
+
 export default {
   name: 'square',
   data() {
@@ -48,14 +51,16 @@ export default {
         { src: require('@/assets/square/dream5.jpg') },
       ],
       activeItem: 0,
-      items: [
-        { title: 'title1', content: 'content1' },
-        { title: 'title2', content: 'content2' },
-        { title: 'title3', content: 'content3' },
-        { title: 'title4', content: 'content4' },
-        { title: 'title5', content: 'content5' },
-      ]
+      items: []
     }
+  },
+  mounted: function() {
+    getBackend(API.GET_SQUARE, null, jsonObj => {
+      this.items = []
+      jsonObj.data.forEach(elem => {
+        this.items.push(elem)
+      })
+    })
   }
 }
 </script>
