@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div style="margin-left: 2rem; margin-right: 2rem">
     <!-- 图片展示面板 -->
     <el-carousel
         :interval="3000"
@@ -17,7 +17,7 @@
     <el-collapse
         v-model="activeItem"
         accordion
-        style="margin-left: 5rem; margin-right: 5rem">
+        style="max-width: 50rem">
       <el-collapse-item
           v-for="(item, idx) in items"
           :key="idx"
@@ -55,7 +55,7 @@ export default {
     }
   },
   mounted: function() {
-    getBackend(API.GET_SQUARE, null, jsonObj => {
+    getBackend(API.GET_SQUARE, {}, jsonObj => {
       this.items = []
       jsonObj.data.forEach(elem => {
         this.items.push(elem)

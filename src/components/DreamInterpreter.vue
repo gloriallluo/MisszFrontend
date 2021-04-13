@@ -10,7 +10,7 @@
     <!-- 输入区域 -->
     <div
         style="min-width: 3rem; max-width: 45rem; margin: 0 auto">
-      <el-form label-width="8rem" style="margin-right: 2rem; margin-top: 2.5rem">
+      <el-form label-width="6rem" style="margin-right: 2rem; margin-top: 2.5rem">
         <el-form-item
             v-for="(item, idx) in dreamForm"
             :key="idx">
@@ -82,10 +82,10 @@
     <!-- 展示回复区 -->
     <div
         v-if="state === 2"
-        style="margin-top: 2rem">
+        style="margin-left: 1rem; margin-right: 1rem; margin-top: 2rem">
       <el-card
           class="box-card"
-          style="margin-left: 3rem; margin-right: 3rem">
+          style="max-width: 40rem; margin: 0 auto">
         <div>{{ this.interpretText }}</div>
       </el-card>
 
@@ -121,7 +121,7 @@ export default {
   },  // components
   data() {
     return {
-      state: 0,
+      state: 2,
       dreamForm: formPattern,
       newFormItemKey: '',
       candidateFormItemKey: selectPattern,
