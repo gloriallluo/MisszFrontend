@@ -121,7 +121,7 @@ export default {
   },  // components
   data() {
     return {
-      state: 2,
+      state: 0,
       dreamForm: formPattern,
       newFormItemKey: '',
       candidateFormItemKey: selectPattern,
