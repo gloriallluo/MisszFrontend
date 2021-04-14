@@ -75,7 +75,7 @@
     <!-- 游戏区 -->
     <div
         v-if="state === 1"
-        style="margin-top: 2rem">
+        style="margin-top: 2rem; max-width: 60rem; padding: 1rem">
       <jump-game />
     </div>
 

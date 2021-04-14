@@ -24,11 +24,12 @@
           :key="idx"
           :name="idx">
         <template slot="title">
-          {{ item.dream }}
+          {{ item.title }}
           <i class="el-icon-moon" style="margin-left: 0.5rem" />
         </template>
         <div>
-          {{ item.interpret }}
+          <p><strong>{{ item.description }}</strong></p>
+          <p>{{ item.content }}</p>
         </div>
       </el-collapse-item>
     </el-collapse>
@@ -59,7 +60,15 @@ export default {
     getBackend(API.GET_SQUARE, {}, jsonObj => {
       this.items = []
       jsonObj.data.forEach(elem => {
-        this.items.push(elem)
+        const idx = elem.dream.indexOf(' ', 7)
+        console.log(elem.dream)
+        console.log(idx)
+        const title = (idx !== -1? elem.dream.slice(0, idx): elem.dream)
+        const description = (idx !== -1? elem.dream.slice(idx): '')
+        this.items.push({
+          title, description,
+          content: elem.interpret
+        })
       })
     })
   }
