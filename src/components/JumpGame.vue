@@ -6,12 +6,13 @@
           v-for="(item, index) in items" :key="index"
           style="display: inline-block; width: 15rem; margin-right: 1rem">
         <el-card>
-          <div slot="header" class="clearfix">{{ item.title }}</div>
+          <div slot="header" class="clearfix text-block">{{ item.title }}</div>
           <el-popover
               :title="item.title"
               trigger="hover"
               :content="item.content"
-              style="font-size: 0.8rem; max-width: 40rem">
+              width="40rem"
+              style="font-size: 0.8rem">
             <div slot="reference" class="text-block">{{ item.content }}</div>
           </el-popover>
         </el-card>

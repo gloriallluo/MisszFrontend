@@ -24,7 +24,7 @@
           :key="idx"
           :name="idx">
         <template slot="title">
-          {{ item.title }}
+          <div class="text-block">{{ item.title }}</div>
           <i class="el-icon-moon" style="margin-left: 0.5rem" />
         </template>
         <div>
@@ -53,20 +53,21 @@ export default {
         { src: require('@/assets/square/dream5.jpg') },
       ],
       activeItem: 0,
-      items: []
+      items: [
+        { title: '很长很长很长很长很长很长很长很长很长很长', description: '很长很长', content: '11111' }
+      ]
     }
   },
   mounted: function() {
     getBackend(API.GET_SQUARE, {}, jsonObj => {
       this.items = []
       jsonObj.data.forEach(elem => {
-        const idx = elem.dream.indexOf(' ', 7)
-        console.log(elem.dream)
-        console.log(idx)
-        const title = (idx !== -1? elem.dream.slice(0, idx): elem.dream)
-        const description = (idx !== -1? elem.dream.slice(idx): '')
+        const begin = elem.dream.indexOf(':')
+        const end = elem.dream.indexOf(' ', begin + 2)
+        const title = (end !== -1? elem.dream.slice(begin + 2, end): elem.dream.slice(begin + 2))
         this.items.push({
-          title, description,
+          title,
+          description: elem.dream,
           content: elem.interpret
         })
       })
@@ -76,5 +77,12 @@ export default {
 </script>
 
 <style scoped>
-
+.text-block {
+  font-size: 0.7rem;
+  width: 100%;
+  display: block;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+  overflow: hidden;
+}
 </style>
