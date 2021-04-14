@@ -11,7 +11,7 @@
               :title="item.title"
               trigger="hover"
               :content="item.content"
-              style="font-size: 0.8rem">
+              style="font-size: 0.8rem; max-width: 40rem">
             <div slot="reference" class="text-block">{{ item.content }}</div>
           </el-popover>
         </el-card>
