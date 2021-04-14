@@ -1,5 +1,5 @@
 <template>
-  <div style="margin: 0 auto">
+  <div>
     <el-row
         style="width: 100%; display: flex; overflow-x: scroll; overflow-y: hidden; white-space: nowrap">
       <el-col
@@ -7,7 +7,13 @@
           style="display: inline-block; width: 15rem; margin-right: 1rem">
         <el-card>
           <div slot="header" class="clearfix">{{ item.title }}</div>
-          <div class="text-block">{{ item.content }}</div>
+          <el-popover
+              :title="item.title"
+              trigger="hover"
+              :content="item.content"
+              style="font-size: 0.8rem">
+            <div slot="reference" class="text-block">{{ item.content }}</div>
+          </el-popover>
         </el-card>
       </el-col>
     </el-row>
