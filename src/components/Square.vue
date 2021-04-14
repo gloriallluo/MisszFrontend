@@ -78,7 +78,6 @@ export default {
 
 <style scoped>
 .text-block {
-  font-size: 0.7rem;
   width: 100%;
   display: block;
   white-space: nowrap;
