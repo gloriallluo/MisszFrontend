@@ -11,7 +11,8 @@
           <el-button
               type="text"
               @click="installPWA"
-              :disabled="deferredPrompt === false" style="float: right; margin-right: 1rem; margin-top: 0.5rem">
+              :disabled="deferredPrompt === null"
+              style="float: right; margin-right: 1rem; margin-top: 0.5rem">
             添加到桌面
           </el-button>
         </el-menu>
@@ -36,20 +37,36 @@ export default {
   components: { vueCanvasNest },
   data() {
     return {
-      deferredPrompt: false
+      deferredPrompt: null
     }
   },
   created() {
+    // let installed =  window.matchMedia('(display-mode: standalone)').matches ||
+    //     window.navigator.standalone;
+    // if (installed) return null
     window.addEventListener('beforeinstallprompt', e => {
+      console.log(e)
       e.preventDefault()
       this.deferredPrompt = e
+      return false
     })
   },
   methods: {
     installPWA() {
-      if (this.deferredPrompt) {
+      // this.deferredPrompt.prompt()
+      if (this.deferredPrompt !== null) {
         this.deferredPrompt.prompt()
-        this.deferredPrompt = false
+        // Follow what the user has done with the prompt.
+        this.deferredPrompt.userChoice.then(choiceResult => {
+          console.log(choiceResult.outcome);
+          if(choiceResult.outcome === 'dismissed') {
+            console.log('User cancelled home screen install');
+          } else {
+            console.log('User added to home screen');
+          }
+          // We no longer need the prompt.  Clear it up.
+          this.deferredPrompt = null;
+        });
       }
     }
   }

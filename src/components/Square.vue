@@ -25,7 +25,11 @@
           :name="idx">
         <template slot="title">
           <div class="text-block">{{ item.title }}</div>
-          <i class="el-icon-moon" style="margin-left: 0.5rem" />
+          <el-button
+              type="text"
+              @click="onClickedStar(idx)"
+              :icon="item.liked? 'el-icon-star-on': 'el-icon-star-off'"
+              style="margin-left: 0.8rem" />
         </template>
         <div>
           <p><strong>{{ item.description }}</strong></p>
@@ -37,8 +41,8 @@
 </template>
 
 <script>
-import getBackend from "@/utils/getBackend"
-import API from "@/utils/API"
+// import getBackend from "@/utils/getBackend"
+// import API from "@/utils/API"
 
 export default {
   name: 'square',
@@ -54,24 +58,31 @@ export default {
       ],
       activeItem: 0,
       items: [
-        { title: '很长很长很长很长很长很长很长很长很长很长', description: '很长很长', content: '11111' }
+        { title: '很长很长很长很长很长很长很长很长很长很长', description: '很长很长', content: '11111', liked: false }
       ]
     }
   },
   mounted: function() {
-    getBackend(API.GET_SQUARE, {}, jsonObj => {
-      this.items = []
-      jsonObj.data.forEach(elem => {
-        const begin = elem.dream.indexOf(':')
-        const end = elem.dream.indexOf(' ', begin + 2)
-        const title = (end !== -1? elem.dream.slice(begin + 2, end): elem.dream.slice(begin + 2))
-        this.items.push({
-          title,
-          description: elem.dream,
-          content: elem.interpret
-        })
-      })
-    })
+    // getBackend(API.GET_SQUARE, {}, jsonObj => {
+    //   this.items = []
+    //   jsonObj.data.forEach(elem => {
+    //     const begin = elem.dream.indexOf(':')
+    //     const end = elem.dream.indexOf(' ', begin + 2)
+    //     const title = (end !== -1? elem.dream.slice(begin + 2, end): elem.dream.slice(begin + 2))
+    //     this.items.push({
+    //       title,
+    //       description: elem.dream,
+    //       content: elem.interpret,
+    //       liked: false
+    //     })
+    //   })
+    // })
+  },
+  methods: {
+    onClickedStar(idx) {
+      if (idx >= this.items.length) return
+      this.items[idx].liked = !this.items[idx].liked
+    }
   }
 }
 </script>
