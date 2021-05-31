@@ -8,6 +8,12 @@
             :router="true">
           <el-menu-item index="/ask">解梦</el-menu-item>
           <el-menu-item index="/square">别人的梦</el-menu-item>
+          <el-button
+              type="text"
+              @click="installPWA"
+              :disabled="deferredPrompt === false" style="float: right; margin-right: 1rem; margin-top: 0.5rem">
+            添加到桌面
+          </el-button>
         </el-menu>
       </el-header>
       <vue-canvas-nest :config="{ color: '25, 25, 112', count: 100 }" />
@@ -27,7 +33,26 @@ import vueCanvasNest from 'vue-canvas-nest'
 
 export default {
   name: 'App',
-  components: { vueCanvasNest }
+  components: { vueCanvasNest },
+  data() {
+    return {
+      deferredPrompt: false
+    }
+  },
+  created() {
+    window.addEventListener('beforeinstallprompt', e => {
+      e.preventDefault()
+      this.deferredPrompt = e
+    })
+  },
+  methods: {
+    installPWA() {
+      if (this.deferredPrompt) {
+        this.deferredPrompt.prompt()
+        this.deferredPrompt = false
+      }
+    }
+  }
 }
 </script>
 
