@@ -4,6 +4,7 @@ const API = {
     POST_DREAM: '/backend/dream/',
     POST_GOOD: '/backend/dream/good/',
     POST_BAD: '/backend/dream/bad/',
+    POST_IMAGE: '/backend/dream/image/'
 }
 
 export default API

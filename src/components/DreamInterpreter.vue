@@ -99,9 +99,9 @@
             style="margin: 0.7rem">
           获得分享图片
         </el-button>
+        <el-image v-if="imgSrc !== ''" :src="imgSrc" fit="scale-down" style="height: 40rem" />
       </el-card>
 
-      <el-image v-if="imgSrc !== ''" :src="imgSrc" />
       <similar-slider v-if="showSim" :dream="dream" style="margin: 2rem" />
 
       <el-button
@@ -148,7 +148,6 @@ export default {
       dream: '',
       interpretText: '',
       showSim: false,
-      showImg: false,
       imgSrc: ''
     }
   },  // data
@@ -176,10 +175,9 @@ export default {
           { dream: this.dream },
           jsonObj => {
         this.state = 2
-        this.interpretText = jsonObj
+        this.interpretText = jsonObj.interpret
         this.showSim = false
-        this.showImg = false
-      }, false)
+      })
     },
 
     resetDreamForm() {
@@ -187,12 +185,20 @@ export default {
         this.dreamForm[index].value = ''
       })
       this.dream = ''
+      this.imgSrc = ''
       this.newFormItemKey = ''
       this.candidateFormItemKey = selectPattern
       this.state = 0
     },
 
-    getImage() {}
+    getImage() {
+      postBackend(
+          API.POST_IMAGE,
+          { dream: this.dream },
+          jsonObj => {
+            this.imgSrc = jsonObj.src
+          })
+    }
   }  // methods
 }
 </script>
