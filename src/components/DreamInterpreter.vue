@@ -72,11 +72,11 @@
       </el-button>
     </div>
 
-    <!-- 游戏区 -->
+    <!-- 展示区 -->
     <div
         v-if="state === 1"
         style="max-width: 60rem; padding: 1rem; margin: 0 auto">
-      <jump-game />
+      <square-slider />
     </div>
 
     <!-- 展示回复区 -->
@@ -87,7 +87,22 @@
           class="box-card"
           style="max-width: 40rem; margin: 0 auto">
         <div>{{ this.interpretText }}</div>
+        <el-button
+            size="small"
+            @click="showSim = true"
+            style="margin: 0.5rem">
+          获得相似梦境
+        </el-button>
+        <el-button
+            size="small"
+            @click="getImage"
+            style="margin: 0.5rem">
+          获得分享图片
+        </el-button>
       </el-card>
+
+      <el-image v-if="imgSrc !== ''" :src="imgSrc" />
+      <similar-slider v-if="showSim" :dream="dream" style="margin: 2rem" />
 
       <el-button
           round
@@ -103,65 +118,81 @@
 <script>
 import postBackend from "@/utils/postBackend"
 import API from "@/utils/API"
-import JumpGame from "@/components/JumpGame";
+import SquareSlider from "@/components/SquareSlider"
+import SimilarSlider from "@/components/SimilarSlider"
 
 const formPattern = [
   { key: '梦境描述', value: '' },
   { key: '年龄', value: '' },
   { key: '性别', value: '' }
 ]
+
 const selectPattern = [
     '最近遇到的事情', '学业状况', '情感状况', '婚姻状况'
 ]
 
 export default {
   name: 'dream-interpreter',
+
   components: {
-    JumpGame
+    SquareSlider,
+    SimilarSlider
   },  // components
+
   data() {
     return {
       state: 0,
       dreamForm: formPattern,
       newFormItemKey: '',
       candidateFormItemKey: selectPattern,
-      interpretText: ''
+      dream: '',
+      interpretText: '',
+      showSim: false,
+      showImg: false,
+      imgSrc: ''
     }
   },  // data
+
   methods: {
     onClickAppendFormItem(newKey) {
       if (newKey === '') return
       this.dreamForm.push({ key: newKey, value: '' })
       this.newFormItemKey = ''
     },
+
     onClickRemoveFormItem(idx) {
       if (idx <= 0 || idx >= this.dreamForm.length)
         return
       this.dreamForm.splice(idx, 1)
     },
+
     onSubmit() {
       this.state = 1
-      let dreamBody = ''
       this.dreamForm.forEach(elem => {
-        dreamBody += ` ${elem.key}: ${elem.value}`
+        this.dream += ` ${elem.key}: ${elem.value}`
       })
-      postBackend(API.POST_DREAM, {
-        dream: dreamBody
-      }, jsonObj => {
+      postBackend(
+          API.POST_DREAM,
+          { dream: this.dream },
+          jsonObj => {
         this.state = 2
         this.interpretText = jsonObj
-      })
+        this.showSim = false
+        this.showImg = false
+      }, false)
     },
+
     resetDreamForm() {
       this.dreamForm.forEach((_, index) => {
         this.dreamForm[index].value = ''
       })
-      console.log(this.dreamForm)
-      console.log(formPattern)
+      this.dream = ''
       this.newFormItemKey = ''
       this.candidateFormItemKey = selectPattern
       this.state = 0
-    }
+    },
+
+    getImage() {}
   }  // methods
 }
 </script>

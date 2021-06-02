@@ -9,12 +9,12 @@ export default function getBackend(url, requestParams, onRespond) {
     if (xmlHttp != null) {
         xmlHttp.onreadystatechange = function () {
             if (xmlHttp.readyState === 4) {
+                // console.log(xmlHttp.responseText)
                 const jsonObj = JSON.parse(xmlHttp.responseText);
                 onRespond(jsonObj);
             }
         }
         let trueUrl = url;
-        console.log(requestParams);
         if (requestParams !== null && typeof requestParams === "object") {
             trueUrl += "?";
             Object.keys(requestParams).forEach(key => {
@@ -22,7 +22,6 @@ export default function getBackend(url, requestParams, onRespond) {
             });
             trueUrl = trueUrl.substring(0, trueUrl.length - 1);
         }
-        console.log(trueUrl);
         xmlHttp.open('GET', trueUrl, true);
         xmlHttp.send(null);
     } else {

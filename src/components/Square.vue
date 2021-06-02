@@ -24,7 +24,7 @@
           :key="idx"
           :name="idx">
         <template slot="title">
-          <div class="text-block">{{ item.title }}</div>
+          <span class="text-block">{{ item.title }}</span>
           <a-button
               type="link"
               @click="onClickedLike(idx)"
@@ -75,7 +75,9 @@ export default {
   },
 
   mounted: function() {
-    getBackend(API.GET_SQUARE, {}, jsonObj => {
+    getBackend(
+        API.GET_SQUARE, {},
+        jsonObj => {
       this.items = []
       jsonObj.data.forEach(elem => {
         const begin = elem.dream.indexOf(':')
@@ -97,7 +99,10 @@ export default {
     onClickedLike(idx) {
       if (idx >= this.items.length) return
       let dream = this.items[idx].dream
-      postBackend(API.POST_GOOD, { dream }, jsonObj => {
+      postBackend(
+          API.POST_GOOD,
+          { dream },
+          jsonObj => {
         console.log(jsonObj)
         this.items[idx].good_num = Number(jsonObj)
       })
@@ -106,7 +111,10 @@ export default {
     onClickedDislike(idx) {
       if (idx >= this.items.length) return
       let dream = this.items[idx].dream
-      postBackend(API.POST_BAD, { dream }, jsonObj => {
+      postBackend(
+          API.POST_BAD,
+          { dream },
+          jsonObj => {
         console.log(jsonObj)
         this.items[idx].bad_num = Number(jsonObj)
       })

@@ -1,4 +1,4 @@
-export default function postBackend(url, requestBody, onRespond) {
+export default function postBackend(url, requestBody, onRespond, parse=true) {
     // 现在还不是 json
     let jsonObj;    // 返回的东西
     let xmlHttpPost;
@@ -10,8 +10,10 @@ export default function postBackend(url, requestBody, onRespond) {
 
     xmlHttpPost.onreadystatechange = function () {
         if (xmlHttpPost.readyState === 4) {
-            // jsonObj = JSON.parse(xmlHttpPost.responseText);
-            jsonObj = xmlHttpPost.responseText;
+            if (parse)
+                jsonObj = JSON.parse(xmlHttpPost.responseText);
+            else
+                jsonObj = xmlHttpPost.responseText;
             console.log(jsonObj);
             onRespond(jsonObj);
         }

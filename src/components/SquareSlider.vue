@@ -12,7 +12,7 @@
               trigger="hover"
               :content="item.content"
               width="40rem"
-              style="font-size: 0.8rem">
+              style="font-size: 0.8rem; max-width: 13rem">
             <div slot="reference" class="text-block">{{ item.content }}</div>
           </el-popover>
         </el-card>
@@ -26,7 +26,8 @@ import getBackend from "@/utils/getBackend";
 import API from "@/utils/API";
 
 export default {
-  name: 'jump-game',
+  name: 'square-slider',
+
   data() {
     return {
       items: [
@@ -35,6 +36,7 @@ export default {
       ]
     }
   },
+
   mounted: function() {
     getBackend(API.GET_SQUARE, {}, jsonObj => {
       this.items = []
