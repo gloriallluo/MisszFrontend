@@ -3,42 +3,16 @@
     <el-row
         style="width: 100%; display: flex; overflow-x: scroll; overflow-y: hidden; white-space: nowrap">
       <el-col
-          v-for="(item, idx) in items" :key="idx"
+          v-for="(item, index) in items" :key="index"
           style="display: inline-block; width: 15rem; margin-right: 1rem">
-        <el-card>
-          <div slot="header" class="clearfix text-block">
-            <span class="text-block">{{ item.title }}</span>
-            <span>
-              <a-button type="link" @click="onClickedLike(idx)">
-                {{ item.good_num }}
-                <a-icon type="like" theme="twoTone" />
-              </a-button>
-              <a-button
-                  type="link"
-                  @click="onClickedDislike(idx)">
-                {{ item.bad_num }}
-                <a-icon type="dislike" theme="twoTone" />
-              </a-button>
-            </span>
-          </div>
-          <el-popover
-              :title="item.title"
-              trigger="hover"
-              width="30rem"
-              style="font-size: 0.8rem">
-            <div><strong>Cosine Similarity: {{ item.similarity }}</strong></div>
-            <div>{{ item.content }}</div>
-            <div slot="reference">
-              <div class="text-block">{{ item.content }}</div>
-            </div>
-          </el-popover>
-        </el-card>
+        <dream-card :item="item" :has_similarity="true" />
       </el-col>
     </el-row>
   </div>
 </template>
 
 <script>
+import DreamCard from "@/components/DreamCard"
 import postBackend from "@/utils/postBackend"
 import API from "@/utils/API"
 
@@ -48,6 +22,10 @@ export default {
   props: [
       'dream'
   ],
+
+  components: {
+    DreamCard
+  },
 
   data() {
     return {
@@ -62,8 +40,11 @@ export default {
         { dream: this.dream },
         jsonObj => {
       jsonObj.data.forEach(elem => {
+        const idx = elem.dream.indexOf(' ', 7)
+        const title = (idx !== -1? elem.dream.slice(0, idx): elem.dream)
         this.items.push({
-          title: elem.dream,
+          title,
+          dream: elem.dream,
           content: elem.interpret,
           good_num: elem.good_num,
           bad_num: elem.bad_num,
@@ -71,53 +52,10 @@ export default {
         })
       })
     })
-  },
-
-  methods: {
-    onClickedLike(idx) {
-      if (idx >= this.items.length) return
-      let dream = this.items[idx].title
-      postBackend(
-          API.POST_GOOD,
-          { dream },
-          jsonObj => {
-        this.items[idx].good_num = Number(jsonObj)
-      })
-    },
-
-    onClickedDislike(idx) {
-      if (idx >= this.items.length) return
-      let dream = this.items[idx].title
-      postBackend(
-          API.POST_BAD,
-          { dream },
-          jsonObj => {
-        this.items[idx].bad_num = Number(jsonObj)
-      })
-    }
   }
 }
 </script>
 
 <style scoped>
-.clearfix {
-  font-size: 0.8rem;
-}
 
-.clearfix:before,
-
-.clearfix:after {
-  display: table;
-  content: "";
-  clear: both;
-}
-
-.text-block {
-  font-size: 0.7rem;
-  width: 100%;
-  display: block;
-  word-break: break-all;
-  text-overflow: ellipsis;
-  overflow: hidden;
-}
 </style>

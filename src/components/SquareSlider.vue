@@ -5,35 +5,27 @@
       <el-col
           v-for="(item, index) in items" :key="index"
           style="display: inline-block; width: 15rem; margin-right: 1rem">
-        <el-card>
-          <div slot="header" class="clearfix text-block">{{ item.title }}</div>
-          <el-popover
-              :title="item.title"
-              trigger="hover"
-              :content="item.content"
-              width="40rem"
-              style="font-size: 0.8rem; max-width: 13rem">
-            <div slot="reference" class="text-block">{{ item.content }}</div>
-          </el-popover>
-        </el-card>
+        <dream-card :item="item" :has_similarity="false" />
       </el-col>
     </el-row>
   </div>
 </template>
 
 <script>
-import getBackend from "@/utils/getBackend";
-import API from "@/utils/API";
+import DreamCard from "@/components/DreamCard"
+import getBackend from "@/utils/getBackend"
+import API from "@/utils/API"
 
 export default {
   name: 'square-slider',
 
+  components: {
+    DreamCard
+  },
+
   data() {
     return {
-      items: [
-        { title: 1, content: 'udhewoscjsladcjpsbuisdjclsakcajposd' },
-        { title: 1, content: 'udhewoscjsladcjps' }
-      ]
+      items: []
     }
   },
 
@@ -43,9 +35,12 @@ export default {
       jsonObj.data.forEach(elem => {
         const idx = elem.dream.indexOf(' ', 7)
         const title = (idx !== -1? elem.dream.slice(0, idx): elem.dream)
-        const content = elem.interpret
         this.items.push({
-          title, content
+          title,
+          dream: elem.dream,
+          content: elem.interpret,
+          good_num: elem.good_num,
+          bad_num: elem.bad_num
         })
       })
     })
@@ -54,24 +49,5 @@ export default {
 </script>
 
 <style scoped>
-.clearfix {
-  font-size: 0.8rem;
-}
 
-.clearfix:before,
-
-.clearfix:after {
-  display: table;
-  content: "";
-  clear: both;
-}
-
-.text-block {
-  font-size: 0.7rem;
-  width: 100%;
-  display: block;
-  word-break: break-all;
-  text-overflow: ellipsis;
-  overflow: hidden;
-}
 </style>

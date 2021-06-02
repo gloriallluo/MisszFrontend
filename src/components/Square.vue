@@ -24,25 +24,31 @@
           :key="idx"
           :name="idx">
         <template slot="title">
-          <span class="text-block">{{ item.title }}</span>
-          <a-button
-              type="link"
-              @click="onClickedLike(idx)"
-              style="margin-left: 0.8rem">
-            {{ item.good_num }}
-            <a-icon type="like" theme="twoTone" />
-          </a-button>
-          <a-button
-              type="link"
-              @click="onClickedDislike(idx)"
-              style="margin-left: 0.8rem">
-            {{ item.bad_num }}
-            <a-icon type="dislike" theme="twoTone" />
-          </a-button>
+          <div class="text-block">{{ item.title }}</div>
+          {{ item.good_num }}
+          <a-icon type="like" style="margin-left: 0.5rem; margin-right: 0.8rem" />
+          {{ item.bad_num }}
+          <a-icon type="dislike" style="margin-left: 0.5rem; margin-right: 0.8rem" />
         </template>
         <div>
           <p><strong>{{ item.description }}</strong></p>
           <p>{{ item.content }}</p>
+          <p>
+            <a-button
+                type="link"
+                @click="onClickedLike(idx)"
+                style="margin: 0.8rem">
+              {{ item.good_num }}
+              <a-icon type="like" theme="twoTone" />
+            </a-button>
+            <a-button
+                type="link"
+                @click="onClickedDislike(idx)"
+                style="margin: 0.8rem">
+              {{ item.bad_num }}
+              <a-icon type="dislike" theme="twoTone" />
+            </a-button>
+          </p>
         </div>
       </el-collapse-item>
     </el-collapse>

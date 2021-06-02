@@ -90,13 +90,13 @@
         <el-button
             size="small"
             @click="showSim = true"
-            style="margin: 0.5rem">
+            style="margin: 0.7rem">
           获得相似梦境
         </el-button>
         <el-button
             size="small"
             @click="getImage"
-            style="margin: 0.5rem">
+            style="margin: 0.7rem">
           获得分享图片
         </el-button>
       </el-card>
