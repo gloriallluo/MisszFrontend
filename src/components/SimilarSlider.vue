@@ -1,5 +1,6 @@
 <template>
   <div>
+    <el-card shadow="never">
     <el-row
         style="width: 100%; display: flex; overflow-x: scroll; overflow-y: hidden; white-space: nowrap">
       <el-col
@@ -8,6 +9,7 @@
         <dream-card :item="item" :has_similarity="true" />
       </el-col>
     </el-row>
+  </el-card>
   </div>
 </template>
 

@@ -170,6 +170,11 @@ export default {
       this.dreamForm.forEach(elem => {
         this.dream += ` ${elem.key}: ${elem.value}`
       })
+      // console.log("请求解梦")
+        this.$notify.success({
+          title: '请求解梦',
+          message: ""
+        });
       postBackend(
           API.POST_DREAM,
           { dream: this.dream },
@@ -177,6 +182,11 @@ export default {
         this.state = 2
         this.interpretText = jsonObj.interpret
         this.showSim = false
+        // console.log("收到解梦")
+        this.$notify.success({
+          title: '收到解梦',
+          message: jsonObj.interpret
+        });
       })
     },
 
