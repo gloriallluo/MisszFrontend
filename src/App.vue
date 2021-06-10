@@ -4,7 +4,7 @@
       <el-header height="3rem">
         <el-menu
             mode="horizontal"
-            default-active="/ask"
+            :default-active="activeIndex"
             :router="true">
           <el-menu-item index="/ask">解梦</el-menu-item>
           <el-menu-item index="/square">别人的梦</el-menu-item>
@@ -38,10 +38,12 @@ export default {
   components: { vueCanvasNest },
   data() {
     return {
-      deferredPrompt: null
+      deferredPrompt: null,
+      activeIndex: "/ask"
     }
   },
   created() {
+    this.activeIndex = "/" + window.location.hash.split("/")[1];
     window.onbeforeinstallprompt = (e) => {
       console.log('listen')
       e.preventDefault()
