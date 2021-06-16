@@ -74,9 +74,7 @@ export default {
         { src: require('@/assets/square/dream5.jpg') },
       ],
       activeItem: 0,
-      items: [
-        { title: '很长很长很长很长很长很长很长很长很长很长', description: '很长很长', content: '11111', good_num: 0, bad_num: 0 }
-      ]
+      items: []
     }
   },
 
